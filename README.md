@@ -1,4 +1,4 @@
-![Logo](\src\icons\128x128.png)
+![Logo](/src/icons/128x128.png)
 
 # Extensity Ultra
 
