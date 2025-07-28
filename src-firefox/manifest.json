@@ -1,0 +1,38 @@
+{
+  "manifest_version": 3,
+  "default_locale": "en",
+  "permissions": [
+    "storage",
+    "scripting",
+    "tabs"
+  ],
+  "host_permissions": [
+    "https://www.googleapis.com/",
+    "*://*/*"
+  ],
+  "background": {
+    "scripts": [
+      "service-worker.js"
+    ]
+  },
+  "action": {
+    "default_icon": {}
+  },
+  "icons": {},
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "assets/*"
+      ],
+      "matches": [
+        "<all_urls>"
+      ]
+    }
+  ],
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "{23d3d79a-a6a6-4ac5-a1cf-4360e7344981}",
+      "strict_min_version": "109.0"
+    }
+  }
+}

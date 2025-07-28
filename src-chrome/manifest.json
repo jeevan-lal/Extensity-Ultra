@@ -1,0 +1,20 @@
+{
+  "manifest_version": 3,
+  "default_locale": "en",
+  "permissions": [
+    "storage",
+    "unlimitedStorage",
+    "management"
+  ],
+  "background": {
+    "service_worker": "service-worker.js",
+    "type": "module"
+  },
+  "action": {
+    "default_icon": {},
+    "default_title": "Extensity Ultra",
+    "default_popup": "pages/popup/popup.html"
+  },
+  "icons": {},
+  "options_page": "pages/options/options.html"
+}

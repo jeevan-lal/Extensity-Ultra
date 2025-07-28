@@ -1,0 +1,117 @@
+html {
+  transition: var(--theme-transition-normal);
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  line-height: 1.5;
+  background-color: var(--theme-bg-primary);
+  color: var(--theme-text-primary);
+  transition: var(--theme-transition-normal);
+}
+
+/* === TYPOGRAPHY === */
+
+h1, h2, h3, h4, h5, h6 {
+  color: var(--theme-text-primary);
+  transition: var(--theme-transition-normal);
+}
+
+p {
+  color: var(--theme-text-primary);
+  transition: var(--theme-transition-normal);
+}
+
+a {
+  color: var(--theme-text-link);
+  transition: var(--theme-transition-normal);
+}
+
+a:hover {
+  color: var(--theme-text-link-hover);
+}
+
+/* === FORM ELEMENTS === */
+
+input, textarea, select {
+  background-color: var(--theme-input-bg);
+  border-color: var(--theme-input-border);
+  color: var(--theme-text-primary);
+  transition: var(--theme-transition-normal);
+}
+
+input:focus, textarea:focus, select:focus {
+  border-color: var(--theme-input-focus-border);
+  box-shadow: 0 0 0 0.2rem var(--theme-shadow-focus);
+  outline: none;
+}
+
+input::placeholder, textarea::placeholder {
+  color: var(--theme-input-placeholder);
+}
+
+/* === BUTTONS === */
+
+button {
+  transition: var(--theme-transition-normal);
+}
+
+/* === UTILITY CLASSES === */
+
+.theme-bg-primary {
+  background-color: var(--theme-bg-primary);
+}
+
+.theme-bg-secondary {
+  background-color: var(--theme-bg-secondary);
+}
+
+.theme-text-primary {
+  color: var(--theme-text-primary);
+}
+
+.theme-text-secondary {
+  color: var(--theme-text-secondary);
+}
+
+.theme-border {
+  border-color: var(--theme-border-primary);
+}
+
+.theme-shadow {
+  box-shadow: 0 2px 4px var(--theme-shadow-subtle);
+}
+
+/* === RESPONSIVE UTILITIES === */
+
+@media (max-width: 768px) {
+  body {
+    font-size: 14px;
+  }
+}
+
+/* === ACCESSIBILITY === */
+
+/* Focus indicators */
+*:focus {
+  outline: 2px solid var(--theme-accent-primary);
+  outline-offset: 2px;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  * {
+    border-width: 2px;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
