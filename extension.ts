@@ -52,7 +52,7 @@ export const extensionDetails = {
   prod: {
     chrome: {
       stable: {
-        id: "abafaagbfhobgjkcepckbnadafflkdea", // Extension ID
+        id: "", // Extension ID
       },
       dev: {
         id: "", // Extension ID
@@ -94,16 +94,16 @@ export const extensionDetails = {
   // Development
   dev: {
     chrome: {
-      id: "bppgodlhjcbgkcpndhokilkpnjbikhcd", // Extension ID
+      id: "", // Extension ID
     },
     firefox: {
       id: "902f04acb10967f79b13b935307dff72cf7d8dc3@temporary-addon", // Extension ID
     },
     edge: {
-      id: "bppgodlhjcbgkcpndhokilkpnjbikhcd", // Extension ID
+      id: "", // Extension ID
     },
     opera: {
-      id: "bppgodlhjcbgkcpndhokilkpnjbikhcd", // Extension ID
+      id: "", // Extension ID
     },
     // Server Site Match URL
     matchesURL: [
@@ -335,7 +335,7 @@ export function manifestTransform(json: ManifestJSON): object {
 
   // SET: externally_connectable (NOT FOR FIREFOX BROWSER)
   if (process.env.BROWSER_TYPE !== "firefox") {
-    if (!exconfig.id === false && !exconfig.matchesURL === false) {
+    if (exconfig.id && exconfig.matchesURL && exconfig.matchesURL.length > 0) {
 
       // VALIDATION
       if (!json["externally_connectable"]) json["externally_connectable"] = { "ids": [], "matches": [] };
