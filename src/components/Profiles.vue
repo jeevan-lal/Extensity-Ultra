@@ -26,6 +26,11 @@ const selectedExtensions = ref<string[]>([])
 const expandedProfiles = ref<Set<string>>(new Set())
 const editingProfileId = ref<string | null>(null)
 
+// Drag and drop functionality
+const draggedProfile = ref<any>(null)
+const draggedIndex = ref<number>(-1)
+const isDragging = ref(false)
+
 // Form data
 const formData = ref({
   name: '',
@@ -106,6 +111,80 @@ const resetForm = () => {
   }
   selectedExtensions.value = []
   extensionSearchQuery.value = ''
+}
+
+// Drag and drop functions
+const startDrag = (event: DragEvent, profile: any, index: number) => {
+  if (!event.dataTransfer) return
+
+  draggedProfile.value = profile
+  draggedIndex.value = index
+  isDragging.value = true
+
+  event.dataTransfer.effectAllowed = 'move'
+  event.dataTransfer.setData('text/plain', profile.id)
+
+  // Add dragging class to the element
+  const target = event.target as HTMLElement
+  if (target) {
+    target.classList.add('dragging')
+  }
+}
+
+const onDragOver = (event: DragEvent) => {
+  event.preventDefault()
+  event.dataTransfer!.dropEffect = 'move'
+
+  // Add visual feedback for drop zones
+  const target = event.currentTarget as HTMLElement
+  if (target && !target.classList.contains('dragging')) {
+    target.classList.add('drag-over')
+  }
+}
+
+const onDrop = async (event: DragEvent, dropIndex: number) => {
+  event.preventDefault()
+
+  if (draggedProfile.value && draggedIndex.value !== dropIndex) {
+    // Reorder the profiles array
+    const newProfiles = [...profiles.value]
+    const draggedItem = newProfiles.splice(draggedIndex.value, 1)[0]
+    newProfiles.splice(dropIndex, 0, draggedItem)
+
+    // Update the profiles array
+    profiles.value = newProfiles
+
+    // Save the new order to storage
+    await saveProfilesToStorage(newProfiles)
+  }
+
+  // Reset drag state
+  draggedProfile.value = null
+  draggedIndex.value = -1
+  isDragging.value = false
+
+  // Remove dragging class from all elements
+  document.querySelectorAll('.profile-container').forEach(el => {
+    el.classList.remove('dragging', 'drag-over')
+  })
+}
+
+const onDragLeave = (event: DragEvent) => {
+  const target = event.currentTarget as HTMLElement
+  if (target) {
+    target.classList.remove('drag-over')
+  }
+}
+
+const onDragEnd = () => {
+  draggedProfile.value = null
+  draggedIndex.value = -1
+  isDragging.value = false
+
+  // Remove dragging class from all elements
+  document.querySelectorAll('.profile-container').forEach(el => {
+    el.classList.remove('dragging', 'drag-over')
+  })
 }
 
 const saveProfile = async () => {
@@ -270,6 +349,13 @@ const updateProfileInStorage = async (profile: any) => {
   })
 }
 
+const saveProfilesToStorage = async (profilesArray: any[]) => {
+  return new Promise(async (resolve) => {
+    await props.ex?.storage?.local.set('profiles', profilesArray)
+    resolve(true)
+  })
+}
+
 onMounted(async () => {
   try {
     profiles.value = await getProfilesFromStorage()
@@ -299,7 +385,7 @@ onMounted(async () => {
         <p>No profiles created yet. Create your first profile to get started.</p>
       </div>
 
-      <div v-for="profile in profiles" :key="profile.id" class="profile-container">
+      <div v-for="(profile, index) in profiles" :key="profile.id" class="profile-container" draggable="true" @dragstart="startDrag($event, profile, index)" @dragover="onDragOver($event)" @dragleave="onDragLeave($event)" @drop="onDrop($event, index)" @dragend="onDragEnd()">
         <div class="profile-item" @click="toggleProfileDetails(profile.id)">
           <div class="profile-info">
             <div class="profile-icon">{{ profile.icon }}</div>

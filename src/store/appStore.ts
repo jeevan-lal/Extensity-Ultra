@@ -118,6 +118,11 @@ export const useAppStore = defineStore('app', {
       ex.tabs.create({ url: "chrome://settings/content/siteDetails?site=chrome-extension://" + item.id })
     },
 
+    async removeExtension(ex: any, item: ExtensionInfo) {
+      ex.management?.uninstall(item.id)
+      await this.getExtensions(ex)
+    },
+
     // pinExtension(ex: any, item: ExtensionInfo) {
     // }
 

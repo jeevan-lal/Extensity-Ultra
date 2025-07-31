@@ -77,7 +77,7 @@ defineProps<{ extensions: ExtensionInfo[] }>();
               <PinIcon width="20" height="20" style="fill: white;" />
             </button> -->
             <!-- Remove Extension -->
-            <button data-bs-toggle="tooltip" data-bs-title="Remove Extension" type="button" class="btn btn-secondary btn-danger">
+            <button @click="app.removeExtension(ex, item)" data-bs-toggle="tooltip" data-bs-title="Remove Extension" type="button" class="btn btn-secondary btn-danger">
               <PuzzleRemoveIcon width="20" height="20" style="fill: white;" />
             </button>
             <!-- <div class="btn-group" role="group">

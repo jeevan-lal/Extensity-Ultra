@@ -12,6 +12,7 @@ import EyeOpenIcon from "@src/components/svg/EyeOpen-Icon.vue"
 import OpenInNewIcon from "@src/components/svg/OpenInNew-Icon.vue"
 import CogIcon from "@src/components/svg/Cog-Icon.vue"
 import SecurityIcon from "@src/components/svg/Security-Icon.vue"
+import PuzzleRemoveIcon from "@src/components/svg/PuzzleRemove-Icon.vue"
 
 // Store
 const appStore = useAppStore()
@@ -112,6 +113,10 @@ const openManagePage = (extension: any) => {
 
 const openPermissionsPage = (extension: any) => {
   appStore.openPermissionPage(props.ex, extension)
+}
+
+const removeExtension = async (extension: any) => {
+  await appStore.removeExtension(props.ex, extension)
 }
 
 onMounted(async () => {
@@ -286,6 +291,11 @@ const updateStatusFilter = (event: Event) => {
                   <button @click="openPermissionsPage(extension)" class="action-btn secondary">
                     <SecurityIcon width="16" height="16" />
                     Permissions
+                  </button>
+
+                  <button @click="removeExtension(extension)" class="action-btn primary danger">
+                    <PuzzleRemoveIcon width="16" height="16" />
+                    Remove Extension
                   </button>
                 </div>
               </div>

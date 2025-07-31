@@ -1,6 +1,6 @@
 {
   "name": "extensity-ultra",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "scripts": {
     "watch:chrome": "env-cmd -e dev,chrome,3,stable,offline vite build --mode development --watch --config utils/watch.js",
     "watch:chrome:encode": "env-cmd -e dev,chrome,3,stable,offline,encode vite build --mode development --watch --config utils/watch.js",

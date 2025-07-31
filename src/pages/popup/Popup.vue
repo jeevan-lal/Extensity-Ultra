@@ -21,7 +21,7 @@ const app = useAppStore()
 const searchInAll = ref("")
 const searchInDev = ref("")
 const profiles = ref<any[]>([])
-const popupSettings = ref({ profileDisplay: 'landscape' })
+const popupSettings = ref({ profileDisplay: 'landscape', showProfileIcons: true })
 
 // Load profiles from storage
 const loadProfilesFromStorage = async () => {
@@ -40,6 +40,7 @@ const loadPopupSettings = async () => {
     const result = await ex?.storage?.local.get('popupSettings')
     if (result && result.popupSettings) {
       popupSettings.value.profileDisplay = result.popupSettings.profileDisplay || 'landscape'
+      popupSettings.value.showProfileIcons = result.popupSettings.showProfileIcons
     }
   } catch (error) {
     console.error('Error loading popup settings:', error)
@@ -153,14 +154,14 @@ onMounted(async () => {
         </li>
         <li class="nav-item" role="presentation">
           <button class="nav-link" id="account-tab" data-bs-toggle="tab" data-bs-target="#account-tab-pane" type="button" role="tab" aria-controls="account-tab-pane" aria-selected="false">
-            <CodeIcon width="15" height="15" />
+            <CodeIcon v-if="popupSettings.showProfileIcons" width="15" height="15" />
             Dev
           </button>
         </li>
         <!-- Profile tabs -->
         <li v-for="profile in profiles" :key="profile.id" class="nav-item" role="presentation">
           <button class="nav-link" :id="'profile-' + profile.id + '-tab'" data-bs-toggle="tab" :data-bs-target="'#profile-' + profile.id + '-tab-pane'" type="button" role="tab" :aria-controls="'profile-' + profile.id + '-tab-pane'" aria-selected="false">
-            <span class="profile-icon">{{ profile.icon || '📁' }}</span>
+            <span v-if="popupSettings.showProfileIcons" class="profile-icon">{{ profile.icon || '📁' }}</span>
             {{ profile.name }}
           </button>
         </li>

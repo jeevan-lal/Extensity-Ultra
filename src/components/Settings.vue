@@ -6,6 +6,42 @@
     </div>
 
     <div class="settings-content">
+
+      <!-- General Settings -->
+      <div class="settings-card">
+        <div class="card-content">
+          <div class="settings-row">
+            <div class="settings-group">
+              <label>General Settings</label>
+              <div class="setting-option">
+                <p class="help-text">General settings for the extension</p>
+                <label class="checkbox-label">
+                  <input type="checkbox" v-model="popupSettings.showProfileIcons" @change="savePopupSettings" />
+                  <span class="checkmark"></span>
+                  Show profile icons in profile tabs
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Popup Page Settings -->
+      <div class="settings-card">
+        <div class="card-content">
+          <div class="settings-row">
+            <div class="settings-group">
+              <label>Profile Display Design</label>
+              <p class="help-text">Choose how profile tabs are displayed in the popup</p>
+              <select class="form-select" v-model="popupSettings.profileDisplay" @change="savePopupSettings">
+                <option value="landscape">Landscape - Wide layout with more horizontal space</option>
+                <option value="portrait">Portrait - Compact layout with vertical orientation</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <!-- Import/Export Settings -->
       <div class="settings-card">
         <div class="card-content">
@@ -29,22 +65,6 @@
                 </button>
                 <span v-if="importFileName" class="file-name">{{ importFileName }}</span>
               </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Popup Page Settings -->
-      <div class="settings-card">
-        <div class="card-content">
-          <div class="settings-row">
-            <div class="settings-group">
-              <label>Profile Display Design</label>
-              <p class="help-text">Choose how profile tabs are displayed in the popup</p>
-              <select class="form-select" v-model="popupSettings.profileDisplay" @change="savePopupSettings">
-                <option value="landscape">Landscape - Wide layout with more horizontal space</option>
-                <option value="portrait">Portrait - Compact layout with vertical orientation</option>
-              </select>
             </div>
           </div>
         </div>
@@ -105,7 +125,8 @@ const importFileName = ref('')
 const importFileInput = ref<HTMLInputElement>()
 
 const popupSettings = reactive({
-  profileDisplay: 'landscape'
+  profileDisplay: 'landscape',
+  showProfileIcons: true
 })
 
 const props = defineProps({
@@ -122,7 +143,9 @@ const toast = reactive({
 })
 
 onMounted(async () => {
-  await loadPopupSettings()
+  await Promise.all([
+    loadPopupSettings(),
+  ])
 })
 
 const loadPopupSettings = async () => {
@@ -448,6 +471,77 @@ const showToast = (message: string, type: 'success' | 'error' = 'success') => {
 .form-select option {
   padding: 8px;
   font-size: 0.95rem;
+}
+
+/* Setting Option Styles */
+.setting-option {
+  margin-top: 12px;
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  font-weight: 500;
+  color: var(--theme-text-primary, #1a202c);
+  transition: all 0.2s ease;
+  position: relative;
+  padding-left: 32px;
+}
+
+.checkbox-label:hover {
+  color: #667eea;
+}
+
+.checkbox-label input[type="checkbox"] {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.checkmark {
+  height: 20px;
+  width: 20px;
+  background-color: #ffffff;
+  border: 2px solid #e2e8f0;
+  border-radius: 4px;
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  transition: all 0.2s ease;
+}
+
+.checkbox-label:hover .checkmark {
+  border-color: #667eea;
+}
+
+.checkbox-label input:checked ~ .checkmark {
+  background-color: #667eea;
+  border-color: #667eea;
+}
+
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+  left: 6px;
+  top: 2px;
+  width: 6px;
+  height: 10px;
+  border: solid white;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+.checkbox-label input:checked ~ .checkmark:after {
+  display: block;
 }
 
 /* Toast Styles */

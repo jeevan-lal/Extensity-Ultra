@@ -74,6 +74,25 @@
 /* Profile Items */
 .profile-container {
   margin-bottom: 8px;
+  cursor: grab;
+  transition: all 0.3s ease;
+}
+
+.profile-container:active {
+  cursor: grabbing;
+}
+
+.profile-container.dragging {
+  opacity: 0.5;
+  transform: rotate(2deg);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  z-index: 1000;
+}
+
+.profile-container.drag-over {
+  border-top: 3px solid #667eea;
+  margin-top: 8px;
+  margin-bottom: 8px;
 }
 
 .profile-item {
