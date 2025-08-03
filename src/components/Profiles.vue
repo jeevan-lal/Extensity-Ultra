@@ -479,7 +479,7 @@ onMounted(async () => {
           <!-- Extensions Selection -->
           <div class="form-group">
             <div class="extensions-header">
-              <label>Select Extensions</label>
+              <label>Select Extensions ({{ selectedExtensions.length }})</label>
               <div class="extension-controls">
                 <button @click="selectAllExtensions" class="control-btn">Select All</button>
                 <button @click="clearAllExtensions" class="control-btn">Clear All</button>
@@ -493,7 +493,7 @@ onMounted(async () => {
 
             <div class="extensions-list">
               <div v-for="extension in filteredExtensions" :key="extension.id" class="extension-option" :class="{ 'selected': selectedExtensions.includes(extension.id) }" @click="toggleExtensionSelection(extension.id)">
-                <input type="checkbox" :checked="selectedExtensions.includes(extension.id)" @change="toggleExtensionSelection(extension.id)" class="extension-checkbox" />
+                <input disabled type="checkbox" :checked="selectedExtensions.includes(extension.id)" @change="toggleExtensionSelection(extension.id)" class="extension-checkbox" />
                 <div class="extension-info">
                   <div class="extension-icon">
                     <img :src="getExtensionIcon(extension)" width="24" height="24" :alt="extension.name" />

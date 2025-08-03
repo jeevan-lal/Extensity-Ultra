@@ -20,6 +20,8 @@ import PopupHeader from '@components/PopupHeader.vue'
 const app = useAppStore()
 const searchInAll = ref("")
 const searchInDev = ref("")
+const sortFilterAll = ref("Default")
+const sortFilterDev = ref("Default")
 const profiles = ref<any[]>([])
 const popupSettings = ref({ profileDisplay: 'landscape', showProfileIcons: true })
 
@@ -95,6 +97,32 @@ const deactivateAllProfileExtensions = async (profile: any) => {
   await app.getExtensions(ex)
 }
 
+// Sort extensions function
+const sortExtensions = (extensions: any[], sortType: string) => {
+  if (!extensions || extensions.length === 0) return extensions;
+
+  const sortedExtensions = [...extensions];
+
+  switch (sortType) {
+    case "Default":
+      // Show active extensions first, then inactive, both sorted A-Z
+      return sortedExtensions.sort((a, b) => {
+        // First sort by enabled status (active first)
+        if (a.enabled !== b.enabled) {
+          return a.enabled ? -1 : 1;
+        }
+        // Then sort alphabetically within each group
+        return a.name.localeCompare(b.name);
+      });
+    case "A-Z":
+      return sortedExtensions.sort((a, b) => a.name.localeCompare(b.name));
+    case "Z-A":
+      return sortedExtensions.sort((a, b) => b.name.localeCompare(a.name));
+    default:
+      return sortedExtensions;
+  }
+};
+
 // All Extensions
 const allExtensionsItems = computed(() => {
   if (!app.extensions || app.extensions.length <= 0) return [];
@@ -108,7 +136,7 @@ const allExtensionsItems = computed(() => {
       ext.description.toLowerCase().includes(query)
     );
   }
-  return extensions;
+  return sortExtensions(extensions, sortFilterAll.value);
 });
 
 // Developer Extensions
@@ -124,7 +152,7 @@ const devExtensionsItems = computed(() => {
       ext.description.toLowerCase().includes(query)
     );
   }
-  return extensions;
+  return sortExtensions(extensions, sortFilterDev.value);
 });
 
 onMounted(async () => {
@@ -170,11 +198,20 @@ onMounted(async () => {
     <div class="tab-content pt-2" id="js-tabs-content-1">
       <div class="tab-pane fade show active" id="home-tab-pane" role="tabpanel" aria-labelledby="home-tab" tabindex="0">
         <section>
-          <div class="input-group input-group-sm mb-2">
-            <span class="input-group-text">
-              <SearchIcon />
-            </span>
-            <input v-model="searchInAll" type="search" class="form-control" placeholder="Search.." aria-label="Search Extension" autofocus>
+          <div class="search-filter-container mb-2">
+            <div class="input-group input-group-sm">
+              <span class="input-group-text">
+                <SearchIcon />
+              </span>
+              <input v-model="searchInAll" type="search" class="form-control" placeholder="Search.." aria-label="Search Extension" autofocus>
+            </div>
+            <div class="filter-select-container">
+              <select v-model="sortFilterAll" class="form-select form-select-sm">
+                <option value="Default">Default</option>
+                <option value="A-Z">A-Z</option>
+                <option value="Z-A">Z-A</option>
+              </select>
+            </div>
           </div>
         </section>
         <section class="extensions">
@@ -183,11 +220,20 @@ onMounted(async () => {
       </div>
       <div class="tab-pane fade" id="account-tab-pane" role="tabpanel" aria-labelledby="account-tab" tabindex="0">
         <section>
-          <div class="input-group input-group-sm mb-2">
-            <span class="input-group-text">
-              <SearchIcon />
-            </span>
-            <input v-model="searchInDev" type="search" class="form-control" placeholder="Search.." aria-label="Search Extension" autofocus>
+          <div class="search-filter-container mb-2">
+            <div class="input-group input-group-sm">
+              <span class="input-group-text">
+                <SearchIcon />
+              </span>
+              <input v-model="searchInDev" type="search" class="form-control" placeholder="Search.." aria-label="Search Extension" autofocus>
+            </div>
+            <div class="filter-select-container">
+              <select v-model="sortFilterDev" class="form-select form-select-sm">
+                <option value="Default">Default</option>
+                <option value="A-Z">A-Z</option>
+                <option value="Z-A">Z-A</option>
+              </select>
+            </div>
           </div>
         </section>
         <section>
@@ -200,10 +246,10 @@ onMounted(async () => {
           <div class="profile-actions mb-2 d-flex justify-content-end">
             <div class="btn-group btn-group-sm" role="group">
               <button type="button" class="btn btn-outline-success" @click="activateAllProfileExtensions(profile)" title="Activate All">
-                <CheckboxActiveIcon width="20" height="20" />
+                <CheckboxActiveIcon width="15" height="15" />
               </button>
               <button type="button" class="btn btn-outline-danger" @click="deactivateAllProfileExtensions(profile)" title="Deactivate All">
-                <CheckboxIcon width="20" height="20" />
+                <CheckboxIcon width="15" height="15" />
               </button>
             </div>
           </div>

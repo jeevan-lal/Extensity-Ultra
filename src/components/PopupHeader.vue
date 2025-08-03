@@ -57,12 +57,12 @@ onMounted(async () => {
         </div>
       </div>
       <div class="d-flex gap-2">
-        <div @click="handleSmartToggle" class="" :class="toggleButtonClass" :disabled="app.extensions.length === 0" title="Toggle active extensions">
+        <div @click="handleSmartToggle" class="" :class="toggleButtonClass" :disabled="app.extensions.length === 0" title="Active/Inactive Privacy Mode">
           <PrivacyActiveIcon v-if="toggleButtonIcon === 'check'" width="25" height="25" />
           <PrivacyIcon v-else width="25" height="25" />
         </div>
         <div @click="handleOpenOptionsPage" class="options-page-button" title="Open Options Page">
-          <SettingsIcon width="25" height="25" />
+          <SettingsIcon width="20" height="20" />
         </div>
       </div>
     </div>

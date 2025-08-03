@@ -386,8 +386,13 @@ section {
 }
 
 /* Profile Action Buttons - Remove Border Radius */
+.profile-actions .btn-group {
+  gap: 0.25rem;
+}
+
 .profile-actions .btn-group .btn {
-  border-radius: 0 !important;
+  border-radius: 0.3rem !important;
+  padding-top: 0px;
 }
 
 /* Profile Action Button Styles */
@@ -468,6 +473,7 @@ section {
 
 .categories-list.portrait .nav-link:hover {
   background-color: rgba(0, 123, 255, 0.1);
+  color: #007bff !important;
 }
 
 /* Custom Scrollbar Styles */
@@ -516,4 +522,38 @@ section {
     padding: 0.4rem 0.6rem;
     font-size: 0.75rem;
   }
+}
+
+/* Search and Filter Container */
+.search-filter-container {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.search-filter-container .input-group {
+  flex: 1;
+}
+
+.filter-select-container {
+  min-width: 80px;
+}
+
+.filter-select-container .form-select {
+  padding: 3px 7px 3px;
+  border: 1px solid #dee2e6;
+  background-color: #ffffff;
+  color: #212529;
+  cursor: pointer;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.filter-select-container .form-select:focus {
+  border-color: #86b7fe;
+  outline: 0;
+  box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+}
+
+.filter-select-container .form-select:hover {
+  border-color: #86b7fe;
 }

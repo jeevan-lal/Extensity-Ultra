@@ -22,7 +22,9 @@
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
     "baseUrl": ".",
-    "types": ["chrome", "node"],
+    "types": [
+      "node"
+    ],
     "paths": {
       "@src/*": [
         "src/*"

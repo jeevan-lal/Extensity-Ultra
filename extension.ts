@@ -9,12 +9,7 @@ import { fileURLToPath } from "url";
  * [EXTENSION]: Entires
  */
 export const entires = [
-  { "contentScript1": fileURLToPath(new URL('./src/contents/fake.ts', import.meta.url)) },
-  { "contentScript2": fileURLToPath(new URL('./src/contents/index.ts', import.meta.url)) },
-  // MAIN
-  { "contentScript5": fileURLToPath(new URL('./src/contents/set-localStorage.ts', import.meta.url)) },
-  { "contentScript6": fileURLToPath(new URL('./src/contents/dialog-controller.ts', import.meta.url)) },
-  { "contentScript7": fileURLToPath(new URL('./src/contents/dialog-controller-inject.ts', import.meta.url)) }
+  // { "contentScript1": fileURLToPath(new URL('./src/contents/script-1.ts', import.meta.url)) },
 ];
 
 /**
