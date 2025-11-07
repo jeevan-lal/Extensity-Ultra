@@ -48,9 +48,19 @@ const availableExtensions = computed(() => {
     name: ext.name,
     enabled: ext.enabled,
     version: ext.version,
-    icons: ext.icons
+    icons: ext.icons,
+    installType: (!ext.installType) ? false : ext.installType
   }))
 })
+
+const extensionExists = (extId: string) => {
+  if (!appStore.extensions || !Array.isArray(appStore.extensions)) {
+    return false
+  }
+  const extension = appStore.extensions.find(ext => ext.id === extId)
+  if (!extension || !extension.name) return false;
+  else return true;
+}
 
 const getExtensionName = (extId: string) => {
   if (!appStore.extensions || !Array.isArray(appStore.extensions)) {
@@ -71,7 +81,7 @@ const getExtensionVersion = (extId: string) => {
 const getExtensionCount = (profile: any) => {
   if (!profile.extensions) return 0
   if (Array.isArray(profile.extensions)) {
-    return profile.extensions.length
+    return profile.extensions.filter((ext: string) => extensionExists(ext)).length
   }
   if (typeof profile.extensions === 'object') {
     return Object.keys(profile.extensions).length
@@ -80,7 +90,7 @@ const getExtensionCount = (profile: any) => {
 }
 
 const getExtensionIcon = (extension: any) => {
-  if (extension.icons && extension.icons.length > 0) {
+  if (extension && extension.icons && extension.icons.length > 0) {
     const icon = extension.icons.find((icon: any) => icon.size === 48) ||
       extension.icons.find((icon: any) => icon.size === 32) ||
       extension.icons.find((icon: any) => icon.size === 24) ||
@@ -310,6 +320,11 @@ const filteredExtensions = computed(() => {
   )
 })
 
+const getExistsExtensions = (profile: any) => {
+  if (!profile) return {};
+  return profile.filter((ext: string) => extensionExists(ext))
+}
+
 const saveProfileToStorage = async (profile: any) => {
   const existingProfiles = await getProfilesFromStorage()
   existingProfiles.push(profile)
@@ -408,7 +423,7 @@ onMounted(async () => {
             <div class="detail-section">
               <h4>Selected Extensions</h4>
               <div class="extensions-preview">
-                <div v-for="extId in (Array.isArray(profile.extensions) ? profile.extensions : Object.values(profile.extensions || {}))" :key="extId" class="extension-preview-item">
+                <div v-for="extId in getExistsExtensions((Array.isArray(profile.extensions) ? profile.extensions : Object.values(profile.extensions || {})))" :key="extId" class="extension-preview-item">
                   <div class="extension-preview-info">
                     <div class="extension-preview-icon">
                       <img :src="getExtensionIcon(appStore.extensions.find(ext => ext.id === extId))" width="20" height="20" :alt="getExtensionName(extId)" />
@@ -500,7 +515,10 @@ onMounted(async () => {
                   </div>
                   <div class="extension-details">
                     <div class="extension-name-row">
-                      <span class="extension-name">{{ extension.name }}</span>
+                      <span class="extension-name">
+                        {{ extension.name }}
+                        <span class="extension-dev-version" v-if="extension.installType === 'development'">Dev</span>
+                      </span>
                       <span class="extension-version">{{ extension.version || 'Unknown' }}</span>
                     </div>
                   </div>

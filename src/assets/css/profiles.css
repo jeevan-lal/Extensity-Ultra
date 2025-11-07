@@ -625,6 +625,15 @@
   font-weight: 400;
 }
 
+.extension-dev-version {
+  font-size: 0.65rem;
+  color: rgb(70 67 41);
+  border-radius: 6px;
+  padding: 3px;
+  margin-left: 5px;
+  background-color: #dcde30;
+}
+
 .extension-status {
   padding: 4px 8px;
   border-radius: 12px;

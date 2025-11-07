@@ -30,7 +30,7 @@ const loadProfilesFromStorage = async () => {
   return new Promise(async (resolve) => {
     let result = await ex?.storage?.local.get('profiles')
     if (result && result.profiles && result.profiles.length > 0) {
-      resolve(result.profiles)
+      resolve(result.profiles.filter((ext: { isActive: any; }) => ext.isActive))
     }
     resolve([])
   })
